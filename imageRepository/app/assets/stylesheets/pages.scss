@@ -49,12 +49,24 @@ a {
 	text-decoration: none;
 }
 
-h2 {
+.black_text {
+    color: black;
+}
+
+.white_background {
+    background-color: white;
+}
+
+.container {
     color: white;
 }
 
-.link {
-    color: skyblue;
+.notice {
+    color: white;
+}
+
+.alert {
+    color: white;
 }
 
 figure {
@@ -62,8 +74,8 @@ figure {
 	display: flex;
 	align-items: flex-start;
 	justify-content: center;
-	width: 290px;
-    height: 395px;
+	width: 100%;
+    height: 400px;
 	padding: 20px 20px;
 	background-position: center center;
 	background-repeat: no-repeat;

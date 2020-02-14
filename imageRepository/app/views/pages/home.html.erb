@@ -2,27 +2,32 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="jumbotron text-center">
-                <h1>Image Repository</h1>
+                <h1 class="black_text">Image Repository</h1> <br>
 
                 <% if current_user %> 
-                    # add image
-                    <%= link_to "Sign Out", destroy_user_session_path, method: :delete, :class => "link" %>
+                    <%= link_to '<button type="button" class="btn btn-primary">Add Images</button>'.html_safe, new_page_path %> <br> <br>
+                    <%= link_to '<button type="button" class="btn btn-danger">Sign Out</button>'.html_safe, destroy_user_session_path, method: :delete %>
                 <% else %>
-                    <%= link_to "Sign In", new_user_session_path, :class => "link"  %>
-                    <%= link_to "Sign Up", new_user_registration_path, :class => "link"  %>
+                    <%= link_to '<button type="button" class="btn btn-primary">Sign In</button>'.html_safe, new_user_session_path  %> <br> <br>
+                    <%= link_to '<button type="button" class="btn btn-primary">Sign Up</button>'.html_safe, new_user_registration_path  %>
                 <% end %>
             </div>
         </div>
-        <div class="col-sm-6 col-md-4">
-            <a href="#">
-                <figure style="background-image: url('https://images.pexels.com/photos/1368382/pexels-photo-1368382.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');">
-                    <div class="date"><span class="card-date-day">20</span><span class="card-date-month">APR</span></div>
-                    <figcaption>
-                        <h4> <span>The arsonist had oddly shaped feet</span></h4>
-                        <p>The magic Indian is a mysterious spiritual force, and we're going to Cathedral Rock, and that's the vortex of the heart.</p>
-                    </figcaption>
-                </figure>
-            </a>
-        </div>
+
+        <% @images.each do |image| %>
+            <% if image.file.attached? %>
+                <div class="col-sm-6 col-md-4">
+                    <a href= <%= image_path(image.id) %>>
+                        <figure style="background-image: url(<%= rails_blob_url(image.file) %>)">
+                            <div class="date"><span class="card-date-day"><%= image.created_at.day%></span>
+                            <span class="card-date-month"><%= image.get_month%></span></div>
+                            <figcaption>
+                                <h4> <span><%= image.title%></span></h4>
+                            </figcaption>
+                        </figure>
+                    </a>
+                </div>
+            <%end%>
+        <% end %>
     </div>
 </div>

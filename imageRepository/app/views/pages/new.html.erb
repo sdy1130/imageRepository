@@ -1,0 +1,56 @@
+<div class="container">
+    <div class="row">
+
+    <div class="col-sm-12">
+        <h1>Add Image</h1> <br>
+    </div>
+
+    <%= form_with scope: :page, url: pages_path, local: true do |form| %>
+        <div class="col-sm-12">
+            <% if @image.errors.any? %>
+                <div id="error_explanation">
+                    <h2>
+                    <%= pluralize(@image.errors.count, "error") %> prohibited
+                    this image from being saved:
+                    </h2>
+                    <ul>
+                    <% @image.errors.full_messages.each do |msg| %>
+                        <li><%= msg %></li>
+                    <% end %>
+                    </ul>
+                </div>
+            <% end %>
+        </div>
+    
+        <div class="col-sm-12">
+            <p>
+            <%= form.label :title %><br>
+            <%= form.text_field :title %>
+            </p>
+        
+            <p>
+            <%= form.label :description %><br>
+            <%= form.rich_text_area :description, :placeholder=>"What is your image about?", :class=>"white_background black_text" %>
+            </p>
+
+            <p>
+            <%= form.label :privacy %><br>
+            <%= form.select :privacy, ['private', 'public']%>
+            </p>
+
+            <p>
+            <%= form.label :images %><br>
+            <%= form.file_field :images, multiple: true %>
+            </p>
+        
+            <p>
+            <%= form.submit %>
+            </p>
+        </div>
+    
+    <% end %>
+    <div class="col-sm-12">
+    <%= link_to '<button type="button" class="btn btn-primary">Back</button>'.html_safe, root_path %>
+    </div>
+    </div>
+</div>
