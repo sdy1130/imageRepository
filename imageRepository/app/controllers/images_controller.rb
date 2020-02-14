@@ -19,6 +19,34 @@ class ImagesController < ApplicationController
     def update
         @image = Image.find(params[:id])
         image_params = form_params
+        
+        # If wants to change the image
+        if form_params[:file]
+            image_params[:file] = form_params[:file]
+        end
+
+        # Find latitude and longitude
+        address = [form_params[:street], form_params[:city], form_params[:province], form_params[:country]].compact.join(', ')
+        results = Geocoder.search(address)
+
+        # Check if valid address
+        if results.first != nil
+            image_params[:address] = address
+            image_params[:latitude] = results.first.coordinates[0]
+            image_params[:longitude] = results.first.coordinates[1]
+            image_params[:street] = form_params[:street]
+            image_params[:city] = form_params[:city]
+            image_params[:province] = form_params[:province]
+            image_params[:country] = form_params[:country]
+        else
+            image_params[:address] = nil
+            image_params[:latitude] = nil
+            image_params[:longitude] = nil
+            image_params[:street] = nil
+            image_params[:city] = nil
+            image_params[:province] = nil
+            image_params[:country] = nil
+        end
 
         # Privacy = true if private, false if public
         if form_params[:privacy] == "private"
@@ -43,6 +71,6 @@ class ImagesController < ApplicationController
 
     private
     def form_params
-        params.require(:image).permit(:title, :privacy, :description, :file)
+        params.require(:image).permit(:title, :privacy, :description, :street, :city, :province, :country, :file)
     end
 end

@@ -24,6 +24,7 @@ class PagesController < ApplicationController
   end
 
   def create
+
     @image = Image.new
 
     # Validate uploading images
@@ -42,6 +43,21 @@ class PagesController < ApplicationController
     image_params = {}
     image_params[:user_id] = current_user.id
     image_params[:description] = page_params[:description]
+
+    # Find latitude and longitude
+    address = [page_params[:street], page_params[:city], page_params[:province], page_params[:country]].compact.join(', ')
+    results = Geocoder.search(address)
+
+    # Check if valid address
+    if results.first != nil
+      image_params[:address] = address
+      image_params[:latitude] = results.first.coordinates[0]
+      image_params[:longitude] = results.first.coordinates[1]
+      image_params[:street] = page_params[:street]
+      image_params[:city] = page_params[:city]
+      image_params[:province] = page_params[:province]
+      image_params[:country] = page_params[:country]
+    end
 
     # Privacy = true if private, false if public
     if page_params[:privacy] == "private"
@@ -64,7 +80,7 @@ class PagesController < ApplicationController
         count += 1
         image_params[:title] = image_params[:title] + " " + count.to_s
       end
-      
+
       @image = Image.new(image_params)
 
       if !@image.save
@@ -77,7 +93,7 @@ class PagesController < ApplicationController
 
   private
     def page_params
-      params.require(:page).permit(:title, :privacy, :description, images: [])
+      params.require(:page).permit(:title, :privacy, :description, :street, :city, :province, :country, images: [])
     end
 
     def validate_image_present(images)

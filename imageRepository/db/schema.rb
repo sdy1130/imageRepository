@@ -46,6 +46,13 @@ ActiveRecord::Schema.define(version: 2020_02_14_053903) do
   create_table "images", force: :cascade do |t|
     t.string "title"
     t.boolean "privacy"
+    t.string "street"
+    t.string "city"
+    t.string "province"
+    t.string "country"
+    t.string "address"
+    t.decimal "latitude"
+    t.decimal "longitude"
     t.integer "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
